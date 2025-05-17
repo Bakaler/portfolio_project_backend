@@ -26,3 +26,4 @@ C:\Users\alexb\001_Programs\PortfolioProject\portfolio_project_backend\obj\Debug
 C:\Users\alexb\001_Programs\PortfolioProject\portfolio_project_backend\obj\Debug\net9.0\portfolio_project_backend.pdb
 C:\Users\alexb\001_Programs\PortfolioProject\portfolio_project_backend\obj\Debug\net9.0\portfolio_project_backend.genruntimeconfig.cache
 C:\Users\alexb\001_Programs\PortfolioProject\portfolio_project_backend\obj\Debug\net9.0\ref\portfolio_project_backend.dll
+C:\Users\alexb\001_Programs\PortfolioProject\portfolio_project_backend\obj\Debug\net9.0\portfolio_project_backend.sourcelink.json

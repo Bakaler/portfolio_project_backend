@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\portfolio_project_backend\\portfolio_project_backend.csproj": {}
+    "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\PortfolioBackend\\PortfolioBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\portfolio_project_backend\\portfolio_project_backend.csproj": {
+    "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\PortfolioBackend\\PortfolioBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\portfolio_project_backend\\portfolio_project_backend.csproj",
-        "projectName": "portfolio_project_backend",
-        "projectPath": "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\portfolio_project_backend\\portfolio_project_backend.csproj",
+        "projectUniqueName": "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\PortfolioBackend\\PortfolioBackend.csproj",
+        "projectName": "PortfolioBackend",
+        "projectPath": "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\PortfolioBackend\\PortfolioBackend.csproj",
         "packagesPath": "C:\\Users\\alexb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\portfolio_project_backend\\obj\\",
+        "outputPath": "C:\\Users\\alexb\\001_Programs\\PortfolioProject\\PortfolioBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alexb\\AppData\\Roaming\\NuGet\\NuGet.Config"

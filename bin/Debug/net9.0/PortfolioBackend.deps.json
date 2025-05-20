@@ -6,12 +6,12 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v9.0": {
-      "portfolio_project_backend/1.0.0": {
+      "PortfolioBackend/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "9.0.5"
         },
         "runtime": {
-          "portfolio_project_backend.dll": {}
+          "PortfolioBackend.dll": {}
         }
       },
       "Microsoft.AspNetCore.OpenApi/9.0.5": {
@@ -36,7 +36,7 @@
     }
   },
   "libraries": {
-    "portfolio_project_backend/1.0.0": {
+    "PortfolioBackend/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

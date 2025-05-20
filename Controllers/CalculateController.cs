@@ -2,44 +2,59 @@ using Microsoft.AspNetCore.Mvc;
 using PortfolioBackend._Config.ErrorCodes;
 using PortfolioBackend.Models.Calculator;
 
-namespace APIWithControllers.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class CalculateController : ControllerBase
+namespace APIWithControllers.Controllers
 {
-  private readonly ILogger<CalculateController> _logger;
-
-  public CalculateController(ILogger<CalculateController> logger)
+  /// <summary>
+  /// Controller responsible for handling calculation-related API requests.
+  /// </summary>
+  [ApiController]
+  [Route("[controller]")]
+  public class CalculateController : ControllerBase
   {
-    _logger = logger;
-  }
+    private readonly ILogger<CalculateController> _logger;
+    private readonly IResponseBuilder _responseBuilder; 
 
-  [HttpPost(Name = "Calculate")]
-  public StandardResponse<CalculateResponse> Post([FromBody] CalculateRequest request)
-  {
-    if (!ModelState.IsValid)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CalculateController"/> class.
+    /// </summary>
+    public CalculateController(
+      ILogger<CalculateController> logger,
+      IResponseBuilder responseBuilder)
     {
-      Console.WriteLine("Invalid request");
-      return StandardResponseUtils.CreateErrorResponse<CalculateResponse>(
-        new List<StandardError>
-        {
-          new StandardError(ApiServerErrors.InvalidRequest, "Invalid request", request)
-        },
-        400
-      );
+      _logger = logger;
+      _responseBuilder = responseBuilder;
     }
-    
-    return StandardResponseUtils.CreateSuccessResponse(
-      new CalculateResponse
+
+
+    /// <summary>
+    /// Handles POST requests to perform a calculation based on user input and command parameters.
+    /// </summary>
+    [HttpPost(Name = "Calculate")]
+    public StandardResponse<CalculateResponse> Post([FromBody] CalculateRequest request)
+    {
+      if (!ModelState.IsValid)
       {
-        equation_line = request.equation_line,
-        command_line = request.command_line,
-        user_input = request.user_input
+        return _responseBuilder.CreateErrorResponse<CalculateResponse>(new List<StandardError>
+          {
+            _responseBuilder.CreateError(ApiServerErrors.INVALID_REQUEST, "Invalid input", request)
+          }, 400);
       }
-    );
+      else
+      {
+        return _responseBuilder.CreateSuccessResponse(new CalculateResponse
+          {
+            equation_line = request.equation_line,
+            command_line = request.command_line,
+            user_input = request.user_input
+          }
+        );
+      }
+    }
   }
 }
+
+
 
 
 // public class CalculateRequest

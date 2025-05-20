@@ -10,6 +10,7 @@ namespace PortfolioBackend
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped<IResponseBuilder, DefaultResponseBuilder>();
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularApp",

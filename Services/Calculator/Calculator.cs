@@ -1,5 +1,28 @@
 
 
+using PortfolioBackend.Models.Calculator;
+
+public class CalculatorService
+{
+    private readonly IResponseBuilder _responseBuilder;
+
+    public CalculatorService(IResponseBuilder responseBuilder)
+    {
+        _responseBuilder = responseBuilder;
+    }
+
+    public StandardResponse<CalculateResponse> Evaluate(string userInput, string equationLine, string commandLine)
+    {
+      return _responseBuilder.CreateSuccessResponse(new CalculateResponse
+      {
+          equation_line = equationLine,
+          command_line = commandLine,
+          user_input = userInput
+      });
+    
+  }
+}
+
 // public class CalculatorService
 // {
 //     public SendToBackendResult Evaluate(string userInput, string equationLine, string commandLine)

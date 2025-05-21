@@ -14,16 +14,19 @@ namespace APIWithControllers.Controllers
   {
     private readonly ILogger<CalculateController> _logger;
     private readonly IResponseBuilder _responseBuilder; 
+    private readonly CalculatorService _calculatorService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CalculateController"/> class.
     /// </summary>
     public CalculateController(
-      ILogger<CalculateController> logger,
-      IResponseBuilder responseBuilder)
+        ILogger<CalculateController> logger,
+        IResponseBuilder responseBuilder,
+        CalculatorService calculatorService)
     {
-      _logger = logger;
-      _responseBuilder = responseBuilder;
+        _logger = logger;
+        _responseBuilder = responseBuilder;
+        _calculatorService = calculatorService;
     }
 
 
@@ -42,13 +45,7 @@ namespace APIWithControllers.Controllers
       }
       else
       {
-        return _responseBuilder.CreateSuccessResponse(new CalculateResponse
-          {
-            equation_line = request.equation_line,
-            command_line = request.command_line,
-            user_input = request.user_input
-          }
-        );
+        return _calculatorService.Evaluate(request.user_input, request.equation_line, request.command_line);
       }
     }
   }

@@ -36,16 +36,16 @@ public static class StandardResponseUtils
         Func<T, StandardResponse<R>> next,
         StandardError addedError = null)
     {
-        if (!response.IsSuccess || response.Result == null)
+        if (!response.IsSuccess || response.result == null)
         {
-            var combinedErrors = new List<StandardError>(response.Errors);
+            var combinedErrors = new List<StandardError>(response.errors);
             if (addedError != null)
             {
                 combinedErrors.Add(addedError);
             }
-            return CreateErrorResponse<R>(combinedErrors, response.Status);
+            return CreateErrorResponse<R>(combinedErrors, response.status);
         }
 
-        return next(response.Result);
+        return next(response.result);
     }
 }

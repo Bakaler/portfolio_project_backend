@@ -4,23 +4,54 @@ using PortfolioBackend.Models.Calculator;
 
 public class CalculatorService
 {
-    private readonly IResponseBuilder _responseBuilder;
+  private readonly IResponseBuilder _responseBuilder;
 
-    public CalculatorService(IResponseBuilder responseBuilder)
+  public CalculatorService(IResponseBuilder responseBuilder)
+  {
+    _responseBuilder = responseBuilder;
+  }
+
+  public StandardResponse<CalculateResponse> Evaluate(string userInput, string equationLine, string commandLine)
+  {
+    if (isOperand(userInput).result)
     {
-        _responseBuilder = responseBuilder;
+      if (isOperand(commandLine).result)
+      {
+        commandLine += userInput;
+      }
+      else if (commandLine.Length == 0)
+      {
+        commandLine = userInput;
+      }
+      else if (isOperator(commandLine).result)
+      {
+        equationLine += commandLine;
+        commandLine = userInput;
+      }
+    }
+    else if (isOperator(userInput).result)
+    {
+      if (isOperand(commandLine).result)
+      {
+        equationLine += commandLine;
+        commandLine = userInput;
+      }
+      else if (isOperator(commandLine).result)
+      {
+        commandLine = userInput;
+      }
     }
 
-    public StandardResponse<CalculateResponse> Evaluate(string userInput, string equationLine, string commandLine)
+    return _responseBuilder.CreateSuccessResponse(new CalculateResponse
     {
-      return _responseBuilder.CreateSuccessResponse(new CalculateResponse
-      {
-          equation_line = equationLine,
-          command_line = commandLine,
-          user_input = userInput
-      });
-    
+      equation_line = equationLine,
+      command_line = commandLine,
+      user_input = userInput
+    });
   }
+
+  public StandardResponse<bool> isOperand(string s) => _responseBuilder.CreateSuccessResponse(int.TryParse(s, out _));
+  public StandardResponse<bool> isOperator(string s) => _responseBuilder.CreateSuccessResponse(s == "+" || s == "-" || s == "*" || s == "/");
 }
 
 // public class CalculatorService

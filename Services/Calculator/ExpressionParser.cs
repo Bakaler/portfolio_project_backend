@@ -4,13 +4,34 @@ public class ExpressionParser : IExpressionParser
 {
     private readonly IResponseBuilder _responseBuilder;
     private readonly IInputHandler _inputHandler;
-    
-    private readonly HashSet<string> _operands = new() { "+", "-", "*", "**", "/", "%", "//" }; 
+    private readonly IDigitUpdateLines _digitUpdateLines;
+    private readonly IFunctionUpdateLines _functionUpdateLines;
+    private readonly IPowerUpdateLines _powerUpdateLines;
+    private readonly IFactorUpdateLines _factorUpdateLines;
+    private readonly ITermUpdateLines _termUpdateLines;
+    private readonly IExpUpdateLines _expUpdateLines;
 
-    public ExpressionParser(IResponseBuilder responseBuilder, IInputHandler inputHandler)
+    
+    private readonly HashSet<string> _operands = new() { "+", "-", "*", "**", "/", "%", "//" };
+
+    public ExpressionParser(
+        IResponseBuilder responseBuilder, 
+        IInputHandler inputHandler, 
+        IDigitUpdateLines digitUpdateLines, 
+        IFunctionUpdateLines functionUpdateLines,
+        IPowerUpdateLines powerUpdateLines,
+        IFactorUpdateLines factorUpdateLines,
+        ITermUpdateLines termUpdateLines,
+        IExpUpdateLines expUpdateLines)
     {
-      _responseBuilder = responseBuilder;
-      _inputHandler = inputHandler;
+        _responseBuilder = responseBuilder;
+        _inputHandler = inputHandler;
+        _digitUpdateLines = digitUpdateLines;
+        _functionUpdateLines = functionUpdateLines;
+        _powerUpdateLines = powerUpdateLines;
+        _factorUpdateLines = factorUpdateLines;
+        _termUpdateLines = termUpdateLines;
+        _expUpdateLines = expUpdateLines;
     }
 
     public StandardResponse<CalculateResponse> Parse(string userInput, string equationLine, string commandLine, string? trailingInput)
@@ -27,10 +48,10 @@ public class ExpressionParser : IExpressionParser
     }
 
   // _exp ::=
-      // '='
-      // exp '+' term
-      // exp '-' term
-      // term
+    // '='
+    // exp '+' term
+    // exp '-' term
+    // term
   private StandardResponse<CalculateResponse> Exp(string userInput, string equationLine, string commandLine, string? trailingInput)
   {
     Console.WriteLine($"Exp({userInput}, {equationLine}, {commandLine}, {trailingInput})");
@@ -54,15 +75,15 @@ public class ExpressionParser : IExpressionParser
         else if (_operands.Contains(trailingInput))
         {
           equationLine = equationLine.Substring(0, equationLine.Length - trailingInput.Length - 2);
-          return _inputHandler.UpdateLines("Exp", ' ' + userInput + ' ', equationLine, commandLine);
+          return _expUpdateLines.UpdateLines(' ' + userInput + ' ', equationLine, commandLine);
         }
         else if (trailingInput[^1] == ')')
         {
-          return _inputHandler.UpdateLines("Exp", ' ' + userInput + ' ', equationLine, commandLine);
+          return _expUpdateLines.UpdateLines(' ' + userInput + ' ', equationLine, commandLine);
         }
         else if (Exp(trailingInput, equationLine, commandLine, trailingInput).result != null || Exp($"{trailingInput[^1]}", equationLine, commandLine, trailingInput).result != null)
         {
-          return _inputHandler.UpdateLines("Exp", ' ' + userInput + ' ', equationLine, commandLine);
+          return _expUpdateLines.UpdateLines(' ' + userInput + ' ', equationLine, commandLine);
         }
         else
         {
@@ -111,6 +132,7 @@ public class ExpressionParser : IExpressionParser
     // TODO Verify that trailingInput cant ever be null here 
     if (trailingInput != null && trailingInput[^1] == ')')
     {
+      Console.WriteLine("1");
       return _responseBuilder.CreateSuccessResponse(new CalculateResponse
       {
         equation_line = equationLine,
@@ -120,12 +142,14 @@ public class ExpressionParser : IExpressionParser
     }
     else if (_inputHandler.Inspect(@"^\d+", userInput).result)
     {
-      return _inputHandler.UpdateLines("Digit", userInput, equationLine, commandLine);
+      Console.WriteLine("2");
+      return _digitUpdateLines.UpdateLines(userInput, equationLine, commandLine);
     }
     else if (_inputHandler.Inspect(@"\.", userInput).result)
     {
       if (_inputHandler.Inspect(@"\d+\.\d*", trailingInput).result)
       {
+        Console.WriteLine("3"); 
         return _responseBuilder.CreateSuccessResponse(new CalculateResponse
         {
           equation_line = equationLine,
@@ -135,14 +159,20 @@ public class ExpressionParser : IExpressionParser
       }
       else if (_inputHandler.Inspect(@"\d+", trailingInput).result)
       {
-        return _inputHandler.UpdateLines("Digit", userInput, equationLine, commandLine);
+        Console.WriteLine("4");
+
+        return _digitUpdateLines.UpdateLines(userInput, equationLine, commandLine);
       }
       else if (trailingInput == null || _inputHandler.Inspect(@"\s?\S*$", trailingInput).result)
       {
+        Console.WriteLine("5");
+
         return _inputHandler.UpdateLines("SoloDec", userInput, equationLine, commandLine);
       }
       else
       {
+        Console.WriteLine("6");
+
         return _responseBuilder.CreateSuccessResponse(new CalculateResponse
         {
           equation_line = equationLine,
@@ -156,6 +186,8 @@ public class ExpressionParser : IExpressionParser
     }
     else
     {
+      Console.WriteLine("7");
+
       return _responseBuilder.CreateSuccessResponse(new CalculateResponse
       {
         equation_line = equationLine,
@@ -206,12 +238,4 @@ public class ExpressionParser : IExpressionParser
     });
 
   }
-  // private StandardResponse<CalculateResponse> Exp(...) {}
-  // private StandardResponse<CalculateResponse> Term(...) { ... }
-  // private StandardResponse<CalculateResponse> Factor(...) { ... }
-  // ...
-  // StandardResponse<CalculateResponse> IExpressionParser.Parse(string userInput, string equationLine, string commandLine, string? trailingInput)
-  // {
-  //   throw new NotImplementedException();
-  // }
 }

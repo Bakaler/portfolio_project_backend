@@ -11,6 +11,8 @@ namespace PortfolioBackend
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<IResponseBuilder, DefaultResponseBuilder>();
+            builder.Services.AddScoped<IInputHandler, InputHandler>();
+            builder.Services.AddScoped<IExpressionParser, ExpressionParser>();
             builder.Services.AddScoped<CalculatorService>();
             builder.Services.AddCors(options =>
             {

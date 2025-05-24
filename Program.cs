@@ -1,5 +1,6 @@
 // using PortfolioBackend.Interfaces.Services;
 // using PortfolioBackend.Services.Weather;
+using PortfolioBackend.Extensions;
 
 namespace PortfolioBackend
 {
@@ -13,12 +14,13 @@ namespace PortfolioBackend
             builder.Services.AddScoped<IResponseBuilder, DefaultResponseBuilder>();
             builder.Services.AddScoped<IInputHandler, InputHandler>();
 
-            builder.Services.AddScoped<IExpUpdateLines, ExpUpdateLines>();
-            builder.Services.AddScoped<ITermUpdateLines, TermUpdateLines>();
-            builder.Services.AddScoped<IFactorUpdateLines, FactorUpdateLines>();
-            builder.Services.AddScoped<IPowerUpdateLines, PowerUpdateLines>();
-            builder.Services.AddScoped<IFunctionUpdateLines, FunctionUpdateLines>();
-            builder.Services.AddScoped<IDigitUpdateLines, DigitUpdateLines>();
+            builder.Services.AddUpdateLineHandlers();
+            // builder.Services.AddScoped<IExpUpdateLines, ExpUpdateLines>();
+            // builder.Services.AddScoped<ITermUpdateLines, TermUpdateLines>();
+            // builder.Services.AddScoped<IFactorUpdateLines, FactorUpdateLines>();
+            // builder.Services.AddScoped<IPowerUpdateLines, PowerUpdateLines>();
+            // builder.Services.AddScoped<IFunctionUpdateLines, FunctionUpdateLines>();
+            // builder.Services.AddScoped<IDigitUpdateLines, DigitUpdateLines>();
 
             builder.Services.AddScoped<IExpressionParser, ExpressionParser>();
             builder.Services.AddScoped<CalculatorService>();
